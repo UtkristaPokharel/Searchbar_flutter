@@ -17,6 +17,16 @@ class MySearchBar extends StatefulWidget {
 }
 
 class _MySearchBarState extends State<MySearchBar> {
+  final List<String> itemNames = [
+    'Apple',
+    'Banana',
+    'Cherry',
+    'Date',
+    'Elderberry',
+    'Fig',
+    'Grapes',
+    'Honeydew',
+  ];
   @override
   Widget build(BuildContext context) {
     return SearchAnchor(
@@ -51,8 +61,15 @@ class _MySearchBarState extends State<MySearchBar> {
         );
       },
       suggestionsBuilder: (BuildContext context, SearchController controller) {
-        return List<Widget>.generate(8, (int index) {
-          final item = 'Item ${index + 1}';
+        final query = controller.text.trim().toLowerCase();
+         final suggestions = query.isEmpty
+            ? itemNames
+            : itemNames.where((item) {
+                final itemLower = item.toLowerCase();
+                return itemLower.contains(query);
+              }).toList();
+        return List<Widget>.generate(suggestions.length, (int index) {
+          final item = suggestions[index];
           return ListTile(
             title: Text(item),
             onTap: () {

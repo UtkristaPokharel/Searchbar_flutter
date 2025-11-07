@@ -6,11 +6,21 @@ class Mygrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final itemNames = [
+  'Avocado',
+  'Banana',
+  'Tangerine',
+  'Doughnut',
+  'Carrot',
+  'Chicken',
+  'Mango',
+  'Chips',
+];
     final items = List.generate(
-      8,
+      itemNames.length,
       (i) => {
         'image': 'assets/images/pic${i + 1}.jpeg',
-        'title': 'Item ${i + 1}',
+        'title': itemNames[i],
       },
     );
 
