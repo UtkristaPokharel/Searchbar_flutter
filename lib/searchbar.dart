@@ -18,14 +18,14 @@ class MySearchBar extends StatefulWidget {
 
 class _MySearchBarState extends State<MySearchBar> {
   final List<String> itemNames = [
-    'Apple',
+    'Avocado',
     'Banana',
-    'Cherry',
-    'Date',
-    'Elderberry',
-    'Fig',
-    'Grapes',
-    'Honeydew',
+    'Tangerine',
+    'Doughnut',
+    'Carrot',
+    'Chicken',
+    'Mango',
+    'Chips',
   ];
   @override
   Widget build(BuildContext context) {
@@ -43,9 +43,23 @@ class _MySearchBarState extends State<MySearchBar> {
           onChanged: (String value) {
             controller.openView();
             widget.onSearchChanged(value);
+            setState(() {});
           },
           leading: const Icon(Icons.search),
           trailing: <Widget>[
+            if (controller.text.isNotEmpty)
+              IconButton(
+                tooltip: 'Clear search',
+                onPressed: () {
+                  widget.onSearchChanged('');
+                  try {
+                    controller.text = '';
+                  } catch (_) {}
+                  setState(() {});
+                },
+                icon: const Icon(Icons.clear),
+              ),
+
             Tooltip(
               message: 'Change brightness mode',
               child: IconButton(
@@ -62,7 +76,7 @@ class _MySearchBarState extends State<MySearchBar> {
       },
       suggestionsBuilder: (BuildContext context, SearchController controller) {
         final query = controller.text.trim().toLowerCase();
-         final suggestions = query.isEmpty
+        final suggestions = query.isEmpty
             ? itemNames
             : itemNames.where((item) {
                 final itemLower = item.toLowerCase();
@@ -79,7 +93,6 @@ class _MySearchBarState extends State<MySearchBar> {
           );
         });
       },
-      // check
     );
   }
 }
