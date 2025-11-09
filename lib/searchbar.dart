@@ -45,7 +45,30 @@ class _MySearchBarState extends State<MySearchBar> {
             widget.onSearchChanged(value);
             setState(() {});
           },
-          leading: const Icon(Icons.search),
+          leading: IconButton(
+            icon: Icon(
+              controller.text.isNotEmpty ? Icons.arrow_back : Icons.search,
+            ),
+            tooltip: controller.text.isNotEmpty
+                ? 'Back'
+                : 'Open search',
+            onPressed: () {
+              if (controller.text.isNotEmpty) {
+                // Clear search
+                widget.onSearchChanged('');
+                try {
+                  controller.text = '';
+                } catch (_) {}
+                FocusScope.of(context).unfocus(); // hide keyboard
+                setState(() {});
+              } else {
+                // Open search
+                controller.openView();
+                setState(() {});
+              }
+            },
+          ),
+
           trailing: <Widget>[
             if (controller.text.isNotEmpty)
               IconButton(
@@ -88,7 +111,15 @@ class _MySearchBarState extends State<MySearchBar> {
             title: Text(item),
             onTap: () {
               widget.onSearchChanged(item);
-              controller.closeView(item);
+              // Guard closeView in case different Flutter versions expect
+              // different signatures or may throw in some environments.
+              try {
+                controller.closeView(item);
+              } catch (_) {
+                try {
+                  controller.closeView('');
+                } catch (_) {}
+              }
             },
           );
         });
