@@ -50,7 +50,7 @@ class _MySearchBarState extends State<MySearchBar> {
               controller.text.isNotEmpty ? Icons.arrow_back : Icons.search,
             ),
             tooltip: controller.text.isNotEmpty
-                ? 'Back'
+                ? 'Back '
                 : 'Open search',
             onPressed: () {
               if (controller.text.isNotEmpty) {
